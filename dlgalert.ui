@@ -220,7 +220,7 @@ QPushButton#btnActknowledge:pressed {
                     </size>
                    </property>
                    <property name="text">
-                    <string>Actknowledge</string>
+                    <string>Acknowledge</string>
                    </property>
                   </widget>
                  </item>
