@@ -6,6 +6,8 @@
 #include <QMediaPlayer>
 #include <QAudioOutput>
 #include <QSoundEffect>
+#include <QSettings>
+#include <QDir>
 
 static MainWindow* instance = nullptr;
 
@@ -26,6 +28,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     setWindowFlags(Qt::Window | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint);
     setAttribute(Qt::WA_TranslucentBackground);
+
+    QString appPath = QCoreApplication::applicationFilePath();
+    QSettings settings("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run", QSettings::NativeFormat);
+    settings.setValue("AlertApp", QDir::toNativeSeparators(appPath));
 
     moveToBottomRight();
     initSocket();
