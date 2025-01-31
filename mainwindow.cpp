@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "dlgalert.h"
+#include "dlgsettings.h"
 #include "./ui_mainwindow.h"
 
 #include <QTimer>
@@ -8,6 +9,11 @@
 #include <QSoundEffect>
 #include <QSettings>
 #include <QDir>
+#include <QIcon>
+#include <QMenu>
+#include <QAction>
+#include <QMessageBox>
+#include <QSettings>
 
 static MainWindow* instance = nullptr;
 
@@ -29,12 +35,17 @@ MainWindow::MainWindow(QWidget *parent)
     setWindowFlags(Qt::Window | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint);
     setAttribute(Qt::WA_TranslucentBackground);
 
-    QString appPath = QCoreApplication::applicationFilePath();
-    QSettings settings("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run", QSettings::NativeFormat);
-    settings.setValue("AlertApp", QDir::toNativeSeparators(appPath));
-
     moveToBottomRight();
     initSocket();
+    initTrayIcon();
+    setStartup();
+
+    QSettings settings("MiracleTech", "AlertApp");
+    QString strName = settings.value("Username").toString();
+
+    if(strName == "") {
+        settings.setValue("Username", getUsername());
+    }
 }
 
 MainWindow::~MainWindow()
@@ -44,7 +55,10 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_lblLogo_clicked()
 {
-    QString strDiagram = "SEND$" + getMacAddress() + "$" + getUsername();
+    QSettings settings("MiracleTech", "AlertApp");
+    QString strName = settings.value("Username").toString();
+
+    QString strDiagram = "SEND$" + getMacAddress() + "$" + strName;
     m_pSender->writeDatagram(strDiagram.toLocal8Bit(), QHostAddress::Broadcast, 3022);
 
     ui->centralwidget->setStyleSheet("QLabel#lblLogo { border-image: url(:/Resource/assets/logo-red.png); }");
@@ -72,6 +86,17 @@ void MainWindow::slt_readPendingDatagrams()
     }
 }
 
+void MainWindow::slt_openSettings()
+{
+    DlgSettings *pDlg = new DlgSettings(this);
+    pDlg->show();
+}
+
+void MainWindow::slt_close()
+{
+    close();
+}
+
 void MainWindow::initSocket()
 {
     m_pSender = new QUdpSocket(this);
@@ -96,6 +121,34 @@ void MainWindow::receivedAlert(QString strMac)
 {
     QString strDiagram = "RECEIVE$" + strMac;
     m_pSender->writeDatagram(strDiagram.toLocal8Bit(), QHostAddress::Broadcast, 3022);
+}
+
+void MainWindow::initTrayIcon()
+{
+    QIcon icon(":/Resource/assets/logo.png");
+
+    m_pTrayIcon = new QSystemTrayIcon();
+    m_pTrayIcon->setIcon(icon);
+
+    QMenu *pTrayMenu = new QMenu();
+
+    QAction *pSettingsAction = new QAction("Settings", pTrayMenu);
+    connect(pSettingsAction, SIGNAL(triggered()), this, SLOT(slt_openSettings()));
+    QAction *pExitAction = new QAction("Exit", pTrayMenu);
+    connect(pExitAction, SIGNAL(triggered()), this, SLOT(slt_close()));
+
+    pTrayMenu->addAction(pSettingsAction);
+    pTrayMenu->addSeparator();
+    pTrayMenu->addAction(pExitAction);
+    m_pTrayIcon->setContextMenu(pTrayMenu);
+    m_pTrayIcon->show();
+}
+
+void MainWindow::setStartup()
+{
+    QString appPath = QCoreApplication::applicationFilePath();
+    QSettings settings("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run", QSettings::NativeFormat);
+    settings.setValue("AlertApp", QDir::toNativeSeparators(appPath));
 }
 
 QString MainWindow::getUsername()
@@ -143,5 +196,14 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event)
     {
         m_dragging = false;
         event->accept();
+    }
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    if(QMessageBox::question(this, "Exit App", "Do you want to exit application?") == QMessageBox::Yes) {
+        event->accept();
+    } else {
+        event->ignore();
     }
 }

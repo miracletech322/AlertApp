@@ -27,6 +27,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         AlertApp.qrc
         customlabel.h customlabel.cpp
         dlgalert.h dlgalert.cpp dlgalert.ui
+        dlgsettings.h dlgsettings.cpp dlgsettings.ui
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET AlertApp APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

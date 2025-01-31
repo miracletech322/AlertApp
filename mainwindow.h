@@ -9,6 +9,7 @@
 #include <QNetworkInterface>
 #include <QScreen>
 #include <QRect>
+#include <QSystemTrayIcon>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -30,6 +31,8 @@ public:
     void sendBroadcast();
     void moveToBottomRight();
     void receivedAlert(QString strMac);
+    void initTrayIcon();
+    void setStartup();
 
     QString getUsername();
     QString getMacAddress();
@@ -41,15 +44,19 @@ protected:
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
+    void closeEvent(QCloseEvent *event);
 
 public slots:
     void on_lblLogo_clicked();
     void slt_readPendingDatagrams();
+    void slt_openSettings();
+    void slt_close();
 
 private:
     Ui::MainWindow *ui;
 
     QUdpSocket *m_pSender;
     QUdpSocket *m_pReceiver;
+    QSystemTrayIcon *m_pTrayIcon;
 };
 #endif // MAINWINDOW_H
