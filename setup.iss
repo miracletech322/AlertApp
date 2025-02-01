@@ -3,7 +3,7 @@
 
 #define MyAppName "GPShield"
 #define MyAppVersion "1.0.0"
-#define MyAppPublisher "MiracleTech, Inc."
+#define MyAppPublisher "GPShield Technologies"
 #define MyAppExeName "GPShield.exe"
 
 [Setup]
