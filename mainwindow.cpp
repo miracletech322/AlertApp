@@ -38,7 +38,6 @@ MainWindow::MainWindow(QWidget *parent)
     moveToBottomRight();
     initSocket();
     initTrayIcon();
-    setStartup();
 
     QSettings settings("MiracleTech", "AlertApp");
     QString strName = settings.value("Username").toString();
@@ -144,12 +143,12 @@ void MainWindow::initTrayIcon()
     m_pTrayIcon->show();
 }
 
-void MainWindow::setStartup()
-{
-    QString appPath = QCoreApplication::applicationFilePath();
-    QSettings settings("HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\Run", QSettings::NativeFormat);
-    settings.setValue("AlertApp", QDir::toNativeSeparators(appPath));
-}
+// void MainWindow::setStartup()
+// {
+//     QString appPath = QCoreApplication::applicationFilePath();
+//     QSettings settings("HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\Run", QSettings::NativeFormat);
+//     settings.setValue("AlertApp", QDir::toNativeSeparators(appPath));
+// }
 
 QString MainWindow::getUsername()
 {

@@ -32,7 +32,6 @@ public:
     void moveToBottomRight();
     void receivedAlert(QString strMac);
     void initTrayIcon();
-    void setStartup();
 
     QString getUsername();
     QString getMacAddress();

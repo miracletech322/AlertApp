@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     if(!shared.create(512)) {
-        QMessageBox::warning(nullptr, "Instance Already Running", "Another instance of this application is already running.");
+//        QMessageBox::warning(nullptr, "Instance Already Running", "Another instance of this application is already running.");
         return -1;
     }
 
