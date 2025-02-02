@@ -30,7 +30,7 @@ public:
     void initSocket();
     void sendBroadcast();
     void moveToBottomRight();
-    void receivedAlert(QString strMac);
+    void receivedAlert(QString strUser, QString strMac);
     void initTrayIcon();
 
     QString getUsername();

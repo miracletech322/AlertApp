@@ -31,6 +31,7 @@ private:
 
     QSoundEffect *sound;
     QString m_strMac;
+    QString m_strUser;
 };
 
 #endif // DLGALERT_H

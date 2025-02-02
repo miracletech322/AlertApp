@@ -70,8 +70,8 @@ void MainWindow::slt_readPendingDatagrams()
         QString strDiagram = QString::fromLocal8Bit(datagram.data());
         QStringList lst = strDiagram.split("$");
 
-        if(lst[0] == "SEND") {
-            if(lst[1] != getMacAddress()) {
+        if(lst[0] != "SEND") {
+            if(lst[1] == getMacAddress()) {
                 DlgAlert *pDialog = new DlgAlert(lst[2], lst[1], this);
                 pDialog->showFullScreen();
             }
@@ -80,6 +80,8 @@ void MainWindow::slt_readPendingDatagrams()
         if(lst[0] == "RECEIVE") {
             if(lst[1] == getMacAddress()) {
                 ui->centralwidget->setStyleSheet("QLabel#lblLogo { border-image: url(:/Resource/assets/logo.png); }");
+
+                QMessageBox::information(this, "Alert confirm", "Received user: " + lst[2]);
             }
         }
     }
@@ -116,9 +118,9 @@ void MainWindow::moveToBottomRight()
     move(x, y);
 }
 
-void MainWindow::receivedAlert(QString strMac)
+void MainWindow::receivedAlert(QString strUser, QString strMac)
 {
-    QString strDiagram = "RECEIVE$" + strMac;
+    QString strDiagram = "RECEIVE$" + strMac + "$" + strUser;
     m_pSender->writeDatagram(strDiagram.toLocal8Bit(), QHostAddress::Broadcast, 3022);
 }
 

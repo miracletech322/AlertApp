@@ -10,6 +10,7 @@ DlgAlert::DlgAlert(QString strUser, QString strMac, QWidget *parent)
 
     ui->lblUser->setText(strUser);
     m_strMac = strMac;
+    m_strUser = strUser;
 
     QScreen *screen = QApplication::primaryScreen();
     if (screen)
@@ -46,7 +47,7 @@ void DlgAlert::on_btnSend_clicked()
 
 void DlgAlert::closeEvent(QCloseEvent *e)
 {
-    MainWindow::getInstance()->receivedAlert(m_strMac);
+    MainWindow::getInstance()->receivedAlert(m_strUser, m_strMac);
 
     sound->stop();
     sound = nullptr;
