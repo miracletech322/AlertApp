@@ -1,19 +1,20 @@
 #include "mainwindow.h"
 
 #include <QApplication>
-#include <QSharedMemory>
 #include <QMessageBox>
-
-QSharedMemory shared("AlertApp");
+#include <QProcess>
+#include <QByteArray>
+#include <QStringList>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    if(!shared.create(512)) {
-//        QMessageBox::warning(nullptr, "Instance Already Running", "Another instance of this application is already running.");
-        return -1;
-    }
+    QProcess process;
+    process.start("taskkill", QStringList() << "/f" << "/im" << "GPShield.exe");
+    process.waitForFinished();
+    QByteArray errorOutput = process.readAllStandardError();
+    qDebug() << errorOutput;
 
     MainWindow::getInstance()->show();
     QIcon icon(":/Resource/assets/logo.png");

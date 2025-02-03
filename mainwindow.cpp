@@ -70,8 +70,8 @@ void MainWindow::slt_readPendingDatagrams()
         QString strDiagram = QString::fromLocal8Bit(datagram.data());
         QStringList lst = strDiagram.split("$");
 
-        if(lst[0] != "SEND") {
-            if(lst[1] == getMacAddress()) {
+        if(lst[0] == "SEND") {
+            if(lst[1] != getMacAddress()) {
                 DlgAlert *pDialog = new DlgAlert(lst[2], lst[1], this);
                 pDialog->showFullScreen();
             }
@@ -80,8 +80,7 @@ void MainWindow::slt_readPendingDatagrams()
         if(lst[0] == "RECEIVE") {
             if(lst[1] == getMacAddress()) {
                 ui->centralwidget->setStyleSheet("QLabel#lblLogo { border-image: url(:/Resource/assets/logo.png); }");
-
-                QMessageBox::information(this, "Alert confirm", "Received user: " + lst[2]);
+//                QMessageBox::information(this, "Alert confirm", "Received user: " + lst[2]);
             }
         }
     }
@@ -144,13 +143,6 @@ void MainWindow::initTrayIcon()
     m_pTrayIcon->setContextMenu(pTrayMenu);
     m_pTrayIcon->show();
 }
-
-// void MainWindow::setStartup()
-// {
-//     QString appPath = QCoreApplication::applicationFilePath();
-//     QSettings settings("HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\Run", QSettings::NativeFormat);
-//     settings.setValue("AlertApp", QDir::toNativeSeparators(appPath));
-// }
 
 QString MainWindow::getUsername()
 {
