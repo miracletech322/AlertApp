@@ -34,7 +34,7 @@ DlgAlert::~DlgAlert()
     delete sound;
 }
 
-void DlgAlert::on_btnActknowledge_clicked()
+void DlgAlert::on_btnAcknowledge_clicked()
 {
     close();
 }
@@ -47,7 +47,7 @@ void DlgAlert::on_btnSend_clicked()
 
 void DlgAlert::closeEvent(QCloseEvent *e)
 {
-    MainWindow::getInstance()->receivedAlert(m_strUser, m_strMac);
+    MainWindow::getInstance()->receivedAlert(m_strMac);
 
     sound->stop();
     sound = nullptr;

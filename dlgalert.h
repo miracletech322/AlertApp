@@ -20,7 +20,7 @@ public:
     ~DlgAlert();
 
 public slots:
-    void on_btnActknowledge_clicked();
+    void on_btnAcknowledge_clicked();
     void on_btnSend_clicked();
 
 protected:

@@ -49,7 +49,7 @@ QPushButton#btnSend:pressed {
 }
 
 /* btnActknowledge - btn-primary (Bootstrap) */
-QPushButton#btnActknowledge {
+QPushButton#btnAcknowledge {
     background-color: #007bff;  /* Bootstrap 'primary' color */
     color: white;
     border: none;
@@ -60,11 +60,11 @@ QPushButton#btnActknowledge {
     transition: background-color 0.3s ease;
 }
 
-QPushButton#btnActknowledge:hover {
+QPushButton#btnAcknowledge:hover {
     background-color: #0056b3;  /* Darker shade for hover */
 }
 
-QPushButton#btnActknowledge:pressed {
+QPushButton#btnAcknowledge:pressed {
     background-color: #004085;  /* Even darker shade for pressed state */
 }
 </string>
@@ -212,7 +212,7 @@ QPushButton#btnActknowledge:pressed {
                   </widget>
                  </item>
                  <item>
-                  <widget class="QPushButton" name="btnActknowledge">
+                  <widget class="QPushButton" name="btnAcknowledge">
                    <property name="minimumSize">
                     <size>
                      <width>240</width>

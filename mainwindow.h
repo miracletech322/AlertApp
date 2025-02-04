@@ -30,7 +30,7 @@ public:
     void initSocket();
     void sendBroadcast();
     void moveToBottomRight();
-    void receivedAlert(QString strUser, QString strMac);
+    void receivedAlert(QString strMac);
     void initTrayIcon();
 
     QString getUsername();
@@ -57,5 +57,6 @@ private:
     QUdpSocket *m_pSender;
     QUdpSocket *m_pReceiver;
     QSystemTrayIcon *m_pTrayIcon;
+    bool m_bStatus;
 };
 #endif // MAINWINDOW_H

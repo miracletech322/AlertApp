@@ -61,6 +61,8 @@ void MainWindow::on_lblLogo_clicked()
     m_pSender->writeDatagram(strDiagram.toLocal8Bit(), QHostAddress::Broadcast, 3022);
 
     ui->centralwidget->setStyleSheet("QLabel#lblLogo { border-image: url(:/Resource/assets/logo-red.png); }");
+
+    m_bStatus = true;
 }
 
 void MainWindow::slt_readPendingDatagrams()
@@ -80,7 +82,10 @@ void MainWindow::slt_readPendingDatagrams()
         if(lst[0] == "RECEIVE") {
             if(lst[1] == getMacAddress()) {
                 ui->centralwidget->setStyleSheet("QLabel#lblLogo { border-image: url(:/Resource/assets/logo.png); }");
-//                QMessageBox::information(this, "Alert confirm", "Received user: " + lst[2]);
+                if(m_bStatus) {
+                    QMessageBox::information(this, "Alert confirm", "Received user: " + lst[2]);
+                    m_bStatus = false;
+                }
             }
         }
     }
@@ -117,9 +122,12 @@ void MainWindow::moveToBottomRight()
     move(x, y);
 }
 
-void MainWindow::receivedAlert(QString strUser, QString strMac)
+void MainWindow::receivedAlert(QString strMac)
 {
-    QString strDiagram = "RECEIVE$" + strMac + "$" + strUser;
+    QSettings settings("MiracleTech", "AlertApp");
+    QString strName = settings.value("Username").toString();
+
+    QString strDiagram = "RECEIVE$" + strMac + "$" + strName;
     m_pSender->writeDatagram(strDiagram.toLocal8Bit(), QHostAddress::Broadcast, 3022);
 }
 
